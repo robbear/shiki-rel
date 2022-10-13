@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "rel",
+  "name": "Rel",
   "patterns": [
     {
       "include": "#strings"
@@ -31,6 +31,9 @@
     },
     {
       "include": "#constants"
+    },
+    {
+      "include": "#special-relations"
     }
   ],
   "repository": {
@@ -42,6 +45,23 @@
         {
           "name": "constant.character.escape.rel",
           "match": "\\\\."
+        },
+        {
+          "include": "#string_percent_sign_interpolate"
+        }
+      ]
+    },
+    "string_percent_sign_interpolate": {
+      "patterns": [
+        {
+          "begin": "%\\(",
+          "end": "\\)",
+          "name": "variable.interpolation.rel",
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
         }
       ]
     },
@@ -142,8 +162,16 @@
     "deprecated-temporary": {
       "patterns": [
         {
-          "name": "keyword.other.rel",
+          "name": "keyword.inspect.rel",
           "match": "@inspect"
+        }
+      ]
+    },
+    "special-relations": {
+      "patterns": [
+        {
+          "name": "keyword.other.rel",
+          "match": "(\\b(insert|delete|output|abort)\\b)"
         }
       ]
     },
@@ -167,7 +195,7 @@
       "patterns": [
         {
           "name": "keyword.control.rel",
-          "match": "(\\b(def|entity|bound|include|ic|forall|exists|∀|∃|return|module|^end)\\b)|(((\\<)?\\|(\\>)?)|∀|∃)"
+          "match": "(\\b(def|entity|value|ic|forall|exists|∀|∃|return|module|^end)\\b)|(((\\<)?\\|(\\>)?)|∀|∃)"
         }
       ]
     },

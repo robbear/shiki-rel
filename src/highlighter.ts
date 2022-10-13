@@ -26,7 +26,7 @@ function resolveOptions(options: HighlighterOptions) {
   let _languages: ILanguageRegistration[] = BUNDLED_LANGUAGES
   let _themes: IThemeRegistration[] = options.themes || []
 
-  if (options.langs?.length) {
+  if (options.langs) {
     _languages = options.langs.map(resolveLang)
   }
   if (options.theme) {
@@ -64,7 +64,7 @@ export async function getHighlighter(options: HighlighterOptions): Promise<Highl
    * Instead, we work around this by using valid hex color codes as lookups in a
    * final "repair" step which translates those codes to the correct CSS variables.
    */
-  const COLOR_REPLACEMENTS: Record<string, string> = {
+  let COLOR_REPLACEMENTS: Record<string, string> = {
     '#000001': 'var(--shiki-color-text)',
     '#000002': 'var(--shiki-color-background)',
     '#000004': 'var(--shiki-token-constant)',
@@ -77,7 +77,9 @@ export async function getHighlighter(options: HighlighterOptions): Promise<Highl
     '#000011': 'var(--shiki-token-punctuation)',
     '#000012': 'var(--shiki-token-link)'
   }
-
+  function setColorReplacements(map: Record<string, string>) {
+    COLOR_REPLACEMENTS = map
+  }
   function fixCssVariablesTheme(theme: IShikiTheme, colorMap: string[]) {
     theme.bg = COLOR_REPLACEMENTS[theme.bg] || theme.bg
     theme.fg = COLOR_REPLACEMENTS[theme.fg] || theme.fg
@@ -96,7 +98,7 @@ export async function getHighlighter(options: HighlighterOptions): Promise<Highl
       _currentTheme = _theme
     }
     const _colorMap = _registry.getColorMap()
-    if (_theme.name === 'css-variables') {
+    if (_theme.type === 'css') {
       fixCssVariablesTheme(_theme, _colorMap)
     }
     return { _theme, _colorMap }
@@ -117,7 +119,8 @@ export async function getHighlighter(options: HighlighterOptions): Promise<Highl
     options = { includeExplanation: true }
   ) {
     if (isPlaintext(lang)) {
-      return [[{ content: code }]]
+      const lines = code.split(/\r\n|\r|\n/)
+      return [...lines.map(line => [{ content: line }])]
     }
     const { _grammar } = getGrammar(lang)
     const { _theme, _colorMap } = getTheme(theme)
@@ -199,7 +202,8 @@ export async function getHighlighter(options: HighlighterOptions): Promise<Highl
     getBackgroundColor,
     getForegroundColor,
     getLoadedThemes,
-    getLoadedLanguages
+    getLoadedLanguages,
+    setColorReplacements
   }
 }
 

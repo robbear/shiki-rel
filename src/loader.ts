@@ -1,4 +1,4 @@
-import { join, dirname } from './utils'
+import { join, dirpathparts } from './utils'
 import type { IOnigLib, IRawGrammar, IRawTheme } from 'vscode-textmate'
 import { loadWASM, createOnigScanner, createOnigString } from 'vscode-oniguruma'
 import { parse, ParseError } from 'jsonc-parser'
@@ -6,12 +6,12 @@ import type { IShikiTheme } from './types'
 
 export const isWebWorker =
   typeof self !== 'undefined' && typeof self.WorkerGlobalScope !== 'undefined'
-
-export const isBrowser =
-  isWebWorker ||
-  (typeof window !== 'undefined' &&
-    typeof window.document !== 'undefined' &&
-    typeof fetch !== 'undefined')
+export const isNode =
+  'process' in globalThis &&
+  typeof process !== 'undefined' &&
+  typeof process.release !== 'undefined' &&
+  process.release.name === 'node'
+export const isBrowser = isWebWorker || !isNode
 
 // to be replaced by rollup
 let CDN_ROOT = '__CDN_ROOT__'
@@ -130,7 +130,7 @@ export async function fetchTheme(themePath: string): Promise<IShikiTheme> {
   const shikiTheme = toShikiTheme(theme)
 
   if (shikiTheme.include) {
-    const includedTheme = await fetchTheme(join(dirname(themePath), shikiTheme.include))
+    const includedTheme = await fetchTheme(join(...dirpathparts(themePath), shikiTheme.include))
 
     if (includedTheme.settings) {
       shikiTheme.settings = includedTheme.settings.concat(shikiTheme.settings)

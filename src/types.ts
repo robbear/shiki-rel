@@ -19,7 +19,7 @@ export interface HighlighterOptions {
   /**
    * A list of languages to load upfront.
    *
-   * Default to `['html', 'css', 'javascript']`
+   * Default to all the bundled languages.
    */
   langs?: (Lang | ILanguageRegistration)[]
 
@@ -96,6 +96,8 @@ export interface Highlighter {
    */
   getBackgroundColor(theme?: StringLiteralUnion<Theme>): string
 
+  setColorReplacements(map: Record<string, string>): void
+
   // codeToRawHtml?(code: string): string
   // getRawCSS?(): string
 
@@ -147,7 +149,7 @@ export interface IShikiTheme extends IRawTheme {
   /**
    * @description light/dark theme
    */
-  type: 'light' | 'dark'
+  type: 'light' | 'dark' | 'css'
 
   /**
    * @description tokenColors of the theme file
@@ -188,6 +190,13 @@ export interface HtmlOptions {
   theme?: StringLiteralUnion<Theme>
   lineOptions?: LineOption[]
 }
+export interface HtmlRendererOptions {
+  langId?: string
+  fg?: string
+  bg?: string
+  lineOptions?: LineOption[]
+  elements?: ElementsOptions
+}
 
 export interface LineOption {
   /**
@@ -195,6 +204,39 @@ export interface LineOption {
    */
   line: number
   classes?: string[]
+}
+
+interface ElementProps {
+  children: string
+  [key: string]: unknown
+}
+
+interface PreElementProps extends ElementProps {
+  className: string
+  style: string
+}
+
+interface CodeElementProps extends ElementProps {}
+
+interface LineElementProps extends ElementProps {
+  className: string
+  lines: IThemedToken[][]
+  line: IThemedToken[]
+  index: number
+}
+
+interface TokenElementProps extends ElementProps {
+  style: string
+  tokens: IThemedToken[]
+  token: IThemedToken
+  index: number
+}
+
+export interface ElementsOptions {
+  pre?: (props: PreElementProps) => string
+  code?: (props: CodeElementProps) => string
+  line?: (props: LineElementProps) => string
+  token?: (props: TokenElementProps) => string
 }
 
 export interface ThemedTokenizerOptions {
