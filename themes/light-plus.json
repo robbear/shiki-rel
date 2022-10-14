@@ -8,7 +8,7 @@
       }
     },
     {
-      "scope": ["meta.embedded", "source.groovy.embedded", "string meta.image.inline.markdown"],
+      "scope": ["meta.embedded", "source.groovy.embedded"],
       "settings": {
         "foreground": "#000000ff"
       }
@@ -564,7 +564,6 @@
     "numberLiteral": "#098658"
   },
   "colors": {
-    "activityBarItem.settingsProfilesBackground": "#4d4d4d",
     "editor.background": "#FFFFFF",
     "editor.foreground": "#000000",
     "editor.inactiveSelectionBackground": "#E5EBF1",
@@ -588,8 +587,6 @@
     "notebook.cellBorderColor": "#E8E8E8",
     "notebook.selectedCellBackground": "#c8ddf150",
     "statusBarItem.errorBackground": "#c72e0f",
-    "list.activeSelectionIconForeground": "#FFF",
-    "list.focusAndSelectionOutline": "#90C2F9",
-    "terminal.inactiveSelectionBackground": "#E5EBF1"
+    "list.activeSelectionIconForeground": "#FFF"
   }
 }

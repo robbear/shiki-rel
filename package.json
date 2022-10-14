@@ -1,6 +1,6 @@
 {
   "name": "shiki",
-  "version": "0.11.1",
+  "version": "0.10.1",
   "description": "shiki",
   "author": "Pine Wu <octref@gmail.com>",
   "homepage": "https://github.com/octref/shiki/tree/main/packages/shiki",
@@ -33,7 +33,7 @@
   "dependencies": {
     "jsonc-parser": "^3.0.0",
     "vscode-oniguruma": "^1.6.1",
-    "vscode-textmate": "^6.0.0"
+    "vscode-textmate": "5.2.0"
   },
   "devDependencies": {
     "@types/node": "^14.17.7"
@@ -41,5 +41,6 @@
   "browser": {
     "fs": false,
     "path": false
-  }
+  },
+  "gitHead": "0b28ad8ccfbf2615f2d9d38ea8255416b8ac3043"
 }

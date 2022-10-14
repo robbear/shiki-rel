@@ -9,6 +9,7 @@
 
 ```sh
 npm i shiki
+# yarn add shiki
 ```
 
 ```js

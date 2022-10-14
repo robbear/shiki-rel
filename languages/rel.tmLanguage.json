@@ -170,7 +170,7 @@
     "special-relations": {
       "patterns": [
         {
-          "name": "keyword.other.rel",
+          "name": "keyword.other.rel", 
           "match": "(\\b(insert|delete|output|abort)\\b)"
         }
       ]
